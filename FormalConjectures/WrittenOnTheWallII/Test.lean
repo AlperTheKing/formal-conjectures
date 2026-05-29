@@ -409,7 +409,9 @@ theorem Star5_max_deg : Star5.maxDegree = 5 := by
 
 @[category test, AMS 5]
 theorem Star5_avg_deg : averageDegree Star5 = 5/3 := by
-  sorry
+  unfold averageDegree
+  simp [Star5, Fintype.card_sum]
+  decide +kernel
 
 @[category test, AMS 5]
 theorem Star5_matching : m Star5 = 1 := by
