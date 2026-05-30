@@ -1,0 +1,7 @@
+scratch/cleanroom/erdos12_isGood.lean:49:27: warning: `ZMod.eq_iff_modEq_nat` has been deprecated: Use `ZMod.natCast_eq_natCast_iff` instead
+
+Note: The updated constant has a different type:
+  ∀ (a b c : ℕ), ↑a = ↑b ↔ a ≡ b [MOD c]
+instead of
+  ∀ (n : ℕ) {a b : ℕ}, ↑a = ↑b ↔ a ≡ b [MOD n]
+'Erdos12.isGood_example' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,0 +1,5 @@
+scratch/cleanroom/erdos686_nine.lean:32:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos686_nine.lean:43:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos686_nine.lean:54:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos686_nine.lean:86:8: warning: declaration uses 'sorry'
+'Erdos686.erdos_686.variants.nine' depends on axioms: [propext, Classical.choice, Quot.sound]

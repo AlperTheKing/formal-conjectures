@@ -1,0 +1,8 @@
+scratch/cleanroom/erdos198_concrete.lean:40:6: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos198_concrete.lean:74:8: warning: declaration uses 'sorry'
+Try this:
+  [apply] simp_all (config := { singlePass := 1 }) -contextual only [mem_setOf_eq, forall_exists_index,
+    forall_eq_apply_imp_iff, IsAPOfLengthWith, ENat.card_coe_set_eq, encard_eq_top_iff, smul_eq_mul, ENat.coe_lt_top,
+    exists_const, exists_and_left, nonempty_def, and_imp, mem_inter_iff, ↓existsAndEq, Nat.add_left_cancel_iff,
+    true_and]
+'Erdos198.erdos_198.variants.concrete' depends on axioms: [propext, Classical.choice, Quot.sound]

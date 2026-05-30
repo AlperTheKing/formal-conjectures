@@ -1,0 +1,16 @@
+scratch/cleanroom/erdos138_two_one.lean:52:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos138_two_one.lean:79:17: warning: This simp argument is unused:
+  Set.mem_image
+
+Hint: Omit it from the simp argument list.
+  simp [Set.mem_i̵m̵a̵g̵e̵,̵ ̵S̵e̵t̵.̵m̵e̵m̵_̵singleton_iff]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+scratch/cleanroom/erdos138_two_one.lean:92:43: warning: This simp argument is unused:
+  Finset.mem_Icc
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵I̵c̵c̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'Erdos138.monoAPNumber_two_one' depends on axioms: [propext, Classical.choice, Quot.sound]

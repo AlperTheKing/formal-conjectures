@@ -1,0 +1,8 @@
+scratch/cleanroom/erdos92_BddAbove.lean:69:62: warning: This simp argument is unused:
+  Finset.mem_image
+
+Hint: Omit it from the simp argument list.
+  simp only [Finset.coe_image, Set.mem_image, Finset.mem_coe,̵ ̵F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵i̵m̵a̵g̵e̵] at hm
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'Erdos92.possible_f_values_BddAbove' depends on axioms: [propext, Classical.choice, Quot.sound]

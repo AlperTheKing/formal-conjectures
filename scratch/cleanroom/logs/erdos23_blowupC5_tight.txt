@@ -1,0 +1,6 @@
+scratch/cleanroom/erdos23_blowupC5_tight.lean:36:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos23_blowupC5_tight.lean:46:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos23_blowupC5_tight.lean:184:5: warning: unused variable `hH`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+'Erdos23.blowupC5_tight' depends on axioms: [propext, Classical.choice, Quot.sound]

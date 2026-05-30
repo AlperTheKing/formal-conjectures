@@ -1,0 +1,1 @@
+'Erdos23.erdos_23.variants.n1' depends on axioms: [propext, Classical.choice, Quot.sound]

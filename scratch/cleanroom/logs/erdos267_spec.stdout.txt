@@ -1,0 +1,9 @@
+scratch/cleanroom/erdos267_spec.lean:33:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos267_spec.lean:43:8: warning: declaration uses 'sorry'
+Try this:
+  [apply] ring_nf!
+  
+  The `ring!` tactic failed to close the goal. Use `ring_nf!` to obtain a normal form.
+    
+  Note that `ring!` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+'Erdos267.erdos_267.variants.specialization_pow_two' depends on axioms: [propext, Classical.choice, Quot.sound]

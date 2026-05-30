@@ -398,6 +398,63 @@ Some rare exceptions exist for consistency:
 
 ## Agent-Specific Requirements
 
+### Proof Hunter Contract
+
+Use Codex ChatGPT/OAuth login only. Do not use API keys.
+
+Primary mission: find new kernel-verified Lean 4 proofs in google-deepmind/formal-conjectures.
+
+A result counts only if:
+- target theorem currently has `sorry`
+- theorem statement is byte-for-byte unchanged
+- only proof body and fully proved helper lemmas are added/changed
+- `lake env lean <file>` exits 0
+- `#print axioms <thm>` contains no `sorryAx`
+- allowed axioms only: `propext`, `Classical.choice`, `Quot.sound`
+- no `sorry`, `admit`, `axiom`, `native_decide`, `unsafe`, custom macros/elab tricks
+- clean-room verification on second clone succeeds
+
+Do not do artifact work before a new proof:
+- no manifest polish
+- no combined patch
+- no review note
+- no PR summary
+- no porting
+- no APN proof copying
+- no statement edits
+- no `answer(sorry)` theorem counted
+
+Proof workflow:
+1. Extract exact theorem signature.
+2. Hash signature.
+3. Build scratch file with original imports/context.
+4. Add helper lemmas above theorem.
+5. Paste theorem signature byte-for-byte.
+6. Replace only proof body.
+7. Append `#print axioms <thm>` in scratch only.
+8. Run `lake env lean <scratch>`.
+9. Fix Lean errors until proof verifies or target is abandoned.
+10. Clean-room verify before counting.
+
+Target priority:
+1. `Erdos686.variants.nine`
+2. research solved, still sorry, explicit witness/counterexample
+3. concrete research open without `answer(sorry)`
+4. finite certificate
+5. numeric certificate
+6. small graph/Finset/cardinality
+7. Mathlib glue
+
+Avoid:
+- `answer(sorry)`
+- statement mismatch
+- port-only targets
+- broad open conjectures without proof plan
+- heavy geometry/asymptotics without existing Mathlib support
+
+Use `lake env lean`, not full `lake build`, during iteration.
+Plain kernel `decide` is allowed only for small finite certificates if it terminates and axioms are clean. `native_decide` is banned.
+
 ### Before Submitting
 
 **CRITICAL REQUIREMENTS:**

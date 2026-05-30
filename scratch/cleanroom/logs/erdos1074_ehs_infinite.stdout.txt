@@ -1,0 +1,6 @@
+scratch/cleanroom/erdos1074_ehs_infinite.lean:57:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos1074_ehs_infinite.lean:66:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos1074_ehs_infinite.lean:76:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos1074_ehs_infinite.lean:85:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos1074_ehs_infinite.lean:113:4: warning: aesop: failed to prove the goal after exhaustive search.
+'Erdos1074.erdos_1074.variants.EHSNumbers_infinite' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,0 +1,32 @@
+scratch/cleanroom/erdos138_two_two.lean:52:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos138_two_two.lean:71:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos138_two_two.lean:116:30: warning: This simp argument is unused:
+  Fin.val_zero
+
+Hint: Omit it from the simp argument list.
+  simp only [Fin.ext_iff, F̵i̵n̵.̵v̵a̵l̵_̵z̵e̵r̵o̵,̵ ̵Fin.val_one] at h12 h23 ⊢
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+scratch/cleanroom/erdos138_two_two.lean:116:44: warning: This simp argument is unused:
+  Fin.val_one
+
+Hint: Omit it from the simp argument list.
+  simp only [Fin.ext_iff, Fin.val_zero,̵ ̵F̵i̵n̵.̵v̵a̵l̵_̵o̵n̵e̵] at h12 h23 ⊢
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+scratch/cleanroom/erdos138_two_two.lean:153:43: warning: unused name: h4
+scratch/cleanroom/erdos138_two_two.lean:130:45: warning: This simp argument is unused:
+  Finset.mem_Icc
+
+Hint: Omit it from the simp argument list.
+  simp ̵[̵F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵I̵c̵c̵]̵
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+scratch/cleanroom/erdos138_two_two.lean:151:14: warning: This simp argument is unused:
+  Finset.mem_Icc
+
+Hint: Omit it from the simp argument list.
+  simp [̵F̵i̵n̵s̵e̵t̵.̵m̵e̵m̵_̵I̵c̵c̵]̵ ̵at ha_val hb_val
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'Erdos138.monoAPNumber_two_two' depends on axioms: [propext, Classical.choice, Quot.sound]

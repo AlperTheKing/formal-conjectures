@@ -1,0 +1,7 @@
+scratch/cleanroom/Erdos23_combined.lean:365:5: warning: unused variable `hH`
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+scratch/cleanroom/Erdos23_combined.lean:374:8: warning: declaration uses 'sorry'
+'Erdos23.erdos_23.variants.n1_tight' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos23.erdos_23.variants.n1' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Erdos23.blowupC5_tight' depends on axioms: [propext, Classical.choice, Quot.sound]

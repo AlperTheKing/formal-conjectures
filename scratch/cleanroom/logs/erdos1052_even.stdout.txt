@@ -1,0 +1,18 @@
+scratch/cleanroom/erdos1052_even.lean:39:8: warning: declaration uses 'sorry'
+scratch/cleanroom/erdos1052_even.lean:63:5: warning: aesop: failed to prove the goal after exhaustive search.
+scratch/cleanroom/erdos1052_even.lean:58:44: warning: This simp argument is unused:
+  n.add_mod
+
+Hint: Omit it from the simp argument list.
+  s̵i̵m̵p̵_̵a̵l̵l̵[̵←̵t̵w̵o̵_̵m̵u̵l̵,̵←̵t̵h̵i̵s̵▸̵ ̵F̵i̵n̵s̵e̵t̵.̵s̵u̵m̵_̵s̵d̵i̵f̵f̵,̵n̵.̵a̵d̵d̵_̵m̵o̵d̵,̵p̵o̵s̵_̵i̵f̵f̵_̵n̵e̵_̵z̵e̵r̵o̵]̵s̲i̲m̲p̲_̲a̲l̲l̲ ̲[̲←̲ ̲t̲w̲o̲_̲m̲u̲l̲,̲ ̲←̲ ̲t̲h̲i̲s̲ ̲▸̲ ̲F̲i̲n̲s̲e̲t̲.̲s̲u̲m̲_̲s̲d̲i̲f̲f̲,̲ ̲p̲o̲s̲_̲i̲f̲f̲_̲n̲e̲_̲z̲e̲r̲o̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+scratch/cleanroom/erdos1052_even.lean:79:110: warning: This simp argument is unused:
+  x✝
+
+Hint: Omit it from the simp argument list.
+  s̵i̵m̵p̵_̵a̵l̵l̵[̵ ̵n̵.̵f̵a̵c̵t̵o̵r̵i̵z̵a̵t̵i̵o̵n̵_̵e̵q̵_̵z̵e̵r̵o̵_̵i̵f̵f̵,̵e̵q̵_̵c̵o̵m̵m̵ ̵(̵a̵ ̵:̵=̵0̵)̵,̵·̵]̵s̲i̲m̲p̲_̲a̲l̲l̲ ̲[̲n̲.̲f̲a̲c̲t̲o̲r̲i̲z̲a̲t̲i̲o̲n̲_̲e̲q̲_̲z̲e̲r̲o̲_̲i̲f̲f̲,̲
+  ̲ ̲ ̲ ̲ ̲e̲q̲_̲c̲o̲m̲m̲ ̲(̲a̲ ̲:̲=̲ ̲0̲)̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'Erdos1052.even_of_isUnitaryPerfect' depends on axioms: [propext, Classical.choice, Quot.sound]
