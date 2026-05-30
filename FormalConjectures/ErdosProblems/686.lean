@@ -97,7 +97,9 @@ for some $k≥2$ and $m≥n+k$?
 theorem erdos_686.variants.nine :
     answer(True) ↔ ∃ᵉ (k ≥ 2) (n : ℕ) (m ≥ n + k),
       (9 : ℚ) = (∏ i ∈ Finset.Icc 1 k, (m + i)) / (∏ i ∈ Finset.Icc 1 k, (n + i)) := by
-  sorry
+  refine ⟨fun _ => ?_, fun _ => trivial⟩
+  exact ⟨3, by norm_num, 11, 25, by norm_num, by
+    norm_num [Finset.prod_Icc_succ_top]⟩
 
 /--
 Can $25$ be written as

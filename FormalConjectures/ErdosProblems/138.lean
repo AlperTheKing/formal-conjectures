@@ -69,12 +69,154 @@ noncomputable abbrev W : ℕ → ℕ := monoAPNumber 2
 @[category test, AMS 11,
 formal_proof using formal_conjectures at "https://github.com/XC0R/formal-conjectures/blob/6c7a16e8998d1c597fa2a5c6329bc9301fcc56e2/FormalConjectures/ErdosProblems/138.lean#L79"]
 theorem monoAPNumber_two_one : W 1 = 1 := by
-  sorry
+  unfold W monoAPNumber
+  let S := monoAP_guarantee_set 2 1
+  change sInf S = 1
+  have hmem : 1 ∈ S := by
+    intro coloring
+    let x : (Finset.Icc 1 1 : Set ℕ) := ⟨1, by simp⟩
+    refine ⟨coloring x, {x}, ?_, ?_⟩
+    · simp [Set.IsAPOfLength]
+    · intro m hm
+      simp at hm
+      subst hm
+      rfl
+  refine le_antisymm (Nat.sInf_le hmem) ?_
+  apply le_csInf ⟨1, hmem⟩
+  intro N hN
+  by_contra hlt
+  have hN0 : N = 0 := by omega
+  subst N
+  let coloring : (Finset.Icc 1 0 : Set ℕ) → Fin 2 := fun x => by
+    have hx : (x : ℕ) ∈ (Finset.Icc 1 0 : Set ℕ) := x.2
+    simp at hx
+  rcases hN coloring with ⟨c, ap, hap, hcolor⟩
+  have hempty : ((fun x : (Finset.Icc 1 0 : Set ℕ) => x.1) '' ap) = (∅ : Set ℕ) := by
+    ext y
+    constructor
+    · rintro ⟨x, hx, rfl⟩
+      have hxm : (x : ℕ) ∈ (Finset.Icc 1 0 : Set ℕ) := x.2
+      simp at hxm
+    · intro hy
+      simp at hy
+  rw [hempty] at hap
+  simpa using hap.card
 
 @[category test, AMS 11,
 formal_proof using formal_conjectures at "https://github.com/XC0R/formal-conjectures/blob/6c7a16e8998d1c597fa2a5c6329bc9301fcc56e2/FormalConjectures/ErdosProblems/138.lean#L142"]
 theorem monoAPNumber_two_two : W 2 = 3 := by
-  sorry
+  unfold W monoAPNumber
+  let S := monoAP_guarantee_set 2 2
+  change sInf S = 3
+  have containsPair {N : ℕ} (coloring : (Finset.Icc 1 N : Set ℕ) → Fin 2)
+      (x y : (Finset.Icc 1 N : Set ℕ)) (hxy : (x : ℕ) < y)
+      (hcol : coloring x = coloring y) :
+      ContainsMonoAPofLength coloring 2 := by
+    refine ⟨coloring x, {x, y}, ?_, ?_⟩
+    · convert Nat.isAPOfLength_pair hxy using 1
+      ext n
+      simp only [Set.mem_image, Set.mem_insert_iff, Set.mem_singleton_iff]
+      constructor
+      · rintro ⟨z, hz, rfl⟩
+        rcases hz with rfl | rfl <;> simp
+      · rintro (rfl | rfl)
+        · exact ⟨x, by simp, rfl⟩
+        · exact ⟨y, by simp, rfl⟩
+    · intro m hm
+      simp at hm
+      rcases hm with rfl | rfl
+      · rfl
+      · exact hcol.symm
+  have hmem : 3 ∈ S := by
+    intro coloring
+    let x1 : (Finset.Icc 1 3 : Set ℕ) := ⟨1, by simp⟩
+    let x2 : (Finset.Icc 1 3 : Set ℕ) := ⟨2, by simp⟩
+    let x3 : (Finset.Icc 1 3 : Set ℕ) := ⟨3, by simp⟩
+    by_cases h12 : coloring x1 = coloring x2
+    · exact containsPair coloring x1 x2 (by norm_num) h12
+    · by_cases h13 : coloring x1 = coloring x3
+      · exact containsPair coloring x1 x3 (by norm_num) h13
+      · have h23 : coloring x2 = coloring x3 := by
+          have hfin (c : Fin 2) : c = 0 ∨ c = 1 := by
+            rcases c with ⟨v, hv⟩
+            interval_cases v
+            · left
+              rfl
+            · right
+              rfl
+          rcases hfin (coloring x1) with h1 | h1 <;>
+            rcases hfin (coloring x2) with h2 | h2 <;>
+            rcases hfin (coloring x3) with h3 | h3 <;> simp_all
+        exact containsPair coloring x2 x3 (by norm_num) h23
+  have notMemLtTwo {N : ℕ} (hNlt : N < 2) :
+      N ∉ monoAP_guarantee_set 2 2 := by
+    intro hN
+    let coloring : (Finset.Icc 1 N : Set ℕ) → Fin 2 := fun _ => 0
+    rcases hN coloring with ⟨c, ap, hap, hcolor⟩
+    simp [Set.IsAPOfLength, Set.IsAPOfLengthWith] at hap
+    have hsub : Finset.image (fun x : (Finset.Icc 1 N : Set ℕ) => x.1) ap.toFinset ⊆
+        Finset.Icc 1 N := by
+      intro y hy
+      rcases Finset.mem_image.mp hy with ⟨x, hx, rfl⟩
+      exact x.2
+    have hcard :
+        (Finset.image (fun x : (Finset.Icc 1 N : Set ℕ) => x.1) ap.toFinset).card = 2 := by
+      exact_mod_cast hap.1
+    have hle := Finset.card_le_card hsub
+    rw [hcard] at hle
+    interval_cases N <;> norm_num at hle
+  have notMemTwo : 2 ∉ monoAP_guarantee_set 2 2 := by
+    intro hN
+    let coloring : (Finset.Icc 1 2 : Set ℕ) → Fin 2 := fun x =>
+      if (x : ℕ) = 1 then 0 else 1
+    rcases hN coloring with ⟨c, ap, hap, hcolor⟩
+    simp [Set.IsAPOfLength, Set.IsAPOfLengthWith] at hap
+    have hsub : Finset.image (fun x : (Finset.Icc 1 2 : Set ℕ) => x.1) ap.toFinset ⊆
+        ({1, 2} : Finset ℕ) := by
+      intro y hy
+      rcases Finset.mem_image.mp hy with ⟨x, hx, rfl⟩
+      have hxIcc : (x : ℕ) ∈ (Finset.Icc 1 2 : Set ℕ) := x.2
+      simp at hxIcc
+      have hxlo : 1 ≤ (x : ℕ) := hxIcc.1
+      have hxhi : (x : ℕ) ≤ 2 := hxIcc.2
+      interval_cases (x : ℕ) <;> simp
+    have himage :
+        Finset.image (fun x : (Finset.Icc 1 2 : Set ℕ) => x.1) ap.toFinset =
+          ({1, 2} : Finset ℕ) := by
+      have hcard :
+          (Finset.image (fun x : (Finset.Icc 1 2 : Set ℕ) => x.1) ap.toFinset).card = 2 := by
+        exact_mod_cast hap.1
+      exact Finset.eq_of_subset_of_card_le hsub (by rw [hcard]; norm_num)
+    have h1mem : 1 ∈ Finset.image (fun x : (Finset.Icc 1 2 : Set ℕ) => x.1) ap.toFinset := by
+      rw [himage]
+      simp
+    have h2mem : 2 ∈ Finset.image (fun x : (Finset.Icc 1 2 : Set ℕ) => x.1) ap.toFinset := by
+      rw [himage]
+      simp
+    rcases Finset.mem_image.mp h1mem with ⟨x, hx, hxval⟩
+    rcases Finset.mem_image.mp h2mem with ⟨y, hy, hyval⟩
+    have hxap : x ∈ ap := by simpa using hx
+    have hyap : y ∈ ap := by simpa using hy
+    have hcx := hcolor x hxap
+    have hcy := hcolor y hyap
+    have hxcolor : coloring x = 0 := by
+      simp [coloring, hxval]
+    have hycolor : coloring y = 1 := by
+      simp [coloring, hyval]
+    have : (0 : Fin 2) = 1 := by
+      have h0c : (0 : Fin 2) = c := hxcolor.symm.trans hcx
+      have h1c : (1 : Fin 2) = c := hycolor.symm.trans hcy
+      exact h0c.trans h1c.symm
+    norm_num at this
+  refine le_antisymm (Nat.sInf_le hmem) ?_
+  apply le_csInf ⟨3, hmem⟩
+  intro N hN
+  by_contra hlt
+  have hNlt : N < 3 := Nat.lt_of_not_ge hlt
+  interval_cases N
+  · exact notMemLtTwo (by norm_num) hN
+  · exact notMemLtTwo (by norm_num) hN
+  · exact notMemTwo hN
 
 /--
 In [Er80] Erdős asks whether
