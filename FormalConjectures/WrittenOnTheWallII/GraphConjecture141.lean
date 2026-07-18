@@ -15,6 +15,7 @@ limitations under the License.
 -/
 
 import FormalConjecturesUtil
+import FormalConjecturesForMathlib.WrittenOnTheWallII.GraphConjecture141Proof
 
 /-!
 # Written on the Wall II - Conjecture 141
@@ -38,11 +39,11 @@ where `tree(G)` is the number of vertices of a largest induced tree subgraph,
 `girth(G)` is the length of the shortest cycle (0 if acyclic), and
 `l(v) = indepNeighbors G v` is the independence number of the neighbourhood of `v`.
 -/
-@[category research open, AMS 5]
+@[category research solved, AMS 5]
 theorem conjecture141 (G : SimpleGraph α) [DecidableRel G.Adj] (h : G.Connected) :
     (G.girth / 2 : ℤ) - 1 + ((Finset.univ.sup (indepNeighborsCard G) : ℕ) : ℤ) ≤
     (largestInducedTreeSize G : ℤ) := by
-  sorry
+  exact FormalProofs.WrittenOnTheWallII.GraphConjecture141.conjecture141 G h
 
 -- Sanity checks
 
