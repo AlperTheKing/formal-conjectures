@@ -19,17 +19,19 @@ import FormalConjectures.Util.ProblemImports
 /-!
 # Erdős Problem 993
 
-*Reference:* [erdosproblems.com/993](https://www.erdosproblems.com/993)
+This file is the proof development linked through `formal_proof` from the statement file
+`FormalConjectures/ErdosProblems/993.lean` of google-deepmind/formal-conjectures. The linked
+statements are `Erdos993.erdos_993.variants.equal_spider_local_tie_balance` and
+`Erdos993.erdos_993.variants.mixed_spider_one_leaf_local_tie_balance`, proved at the end of
+this file with the same definitions and statements as in the statement file.
 
-Let `i_k(T)` denote the number of independent sets of size `k` in a tree `T` (so that
-`∑_k i_k(T) x^k` is the *independence polynomial* of `T`). Is the sequence `i_0(T), i_1(T), …`
-always **unimodal**?
-
-This was conjectured by Alavi, Malde, Schwenk and Erdős [AMSE87]. It remains **open**: it has
-been verified by computer for all trees on at most `29` vertices, but no proof is known.
-
-[AMSE87] Alavi, Y., Malde, P. J., Schwenk, A. J. and Erdős, P., _The vertex independence
-sequence of a graph is not constrained_, Congr. Numer. **58** (1987), 15–23.
+*References:*
+ * [erdosproblems.com/993](https://www.erdosproblems.com/993)
+ * [AMSE87] Alavi, Y., Malde, P. J., Schwenk, A. J. and Erdős, P., _The vertex independence
+   sequence of a graph is not constrained_. Congr. Numer. **58** (1987), 15–23.
+ * [Re26] Reynolds, B., _Mean bounds, structural reductions, and exhaustive verification for
+   tree independence polynomial unimodality_, manuscript (2026),
+   [paper/main_v2.tex](https://github.com/BrettRey/erdos-problem-993/blob/32dbb5d6982147835d4d8f4860e8c2e94efe2f2d/paper/main_v2.tex).
 -/
 
 namespace Erdos993
@@ -44,33 +46,57 @@ nonincreasing thereafter. -/
 def UnimodalSeq (a : ℕ → ℕ) : Prop :=
   ∃ m, (∀ i, i < m → a i ≤ a (i + 1)) ∧ (∀ i, m ≤ i → a (i + 1) ≤ a i)
 
-/-- **Erdős Problem 993.** The independence sequence `i_k(T)` of every finite tree `T` is
-unimodal. (Conjectured by Alavi, Malde, Schwenk and Erdős [AMSE87]; open.) -/
+/--
+The independent set sequence of any tree or forest is unimodal.
+
+In other words, if $i_k(G)$ counts the number of independent sets of vertices of size $k$ in a
+graph $G$, and $T$ is any tree or forest, then for some $m\geq 0$
+$$i_{0}(T)\leq i_{1}(T)\leq\cdots\leq i_{m}(T)\geq i_{m+1}(T)\geq i_{m+2}(T)\geq\cdots.$$
+
+Forests are the acyclic graphs (`SimpleGraph.IsAcyclic`), so this statement includes trees. The
+tree case alone is `erdos_993.variants.tree`. [AMSE87, p. 21] treats trees and forests
+separately: a convolution of unimodal sequences need not be unimodal, so the forest case does
+not follow from the tree case.
+-/
 @[category research open, AMS 5]
 theorem erdos_993 : ∀ (V : Type) [Fintype V] (G : SimpleGraph V),
+    G.IsAcyclic → UnimodalSeq (indepSeq G) := by
+  sorry
+
+/--
+The independent set sequence of any finite tree is unimodal. This is the tree case of
+`erdos_993` ([AMSE87, Problem 3]).
+-/
+@[category research open, AMS 5]
+theorem erdos_993.variants.tree : ∀ (V : Type) [Fintype V] (G : SimpleGraph V),
     G.IsTree → UnimodalSeq (indepSeq G) := by
   sorry
 
 /-
-## A proven lemma toward the `d_leaf ≤ 1` case: local tie-balance for the equal-arm spider
-
-The remainder of this file establishes a *genuinely new, fully proven* lemma that is a step
-toward the conjecture in the "thin tree" regime, following the strategy of the manuscript
-[B. Rey, *Erdős problem 993*, https://github.com/BrettRey/erdos-problem-993].
+## Local tie-balance for the equal-arm spider
 
 For a tree `T` write `I_T(x) = ∑_k i_k(T) x^k` and let `μ_T(λ) = λ I_T'(λ) / I_T(λ)` be the
-mean of the hard-core distribution at fugacity `λ`. A standard reduction expresses unimodality
-through the *tie-fugacity inequality* `μ_T(λ_m) ≥ m - 1`, where `m` is the leftmost mode and
-`λ_m = i_{m-1}/i_m`. The manuscript verifies this only finitely (`n ≤ 23`) plus asymptotically.
+mean size of an independent set under the hard-core measure at fugacity `λ`. Let `m` be the
+leftmost mode and `λ_m = i_{m-1}/i_m ≤ 1` the *tie fugacity*. [Re26, Remark "Tie-fugacity condition",
+L329–L343] observes that the inequality `μ_T(λ_m) ≥ m - 1`, together with `μ_T(λ_m) ≤ μ_T(1)`
+and the mean bound `μ_T(1) < n/3` proved there for trees in which every vertex has at most one
+leaf neighbour (`d_leaf ≤ 1`), would give `mode ≤ ⌊n/3⌋ + 1` for those trees. This is
+Conjecture A of [Re26], a bound on the mode, not unimodality. The inequality is verified there
+for all `d_leaf ≤ 1` trees with `n ≤ 23` and all trees with `n ≤ 22`, and is proved for `S(2^k)`
+at the leftmost mode (with `6 ≤ k ≤ 11` checked by direct computation). The route in
+[Re26, L259–L298] from
+Conjecture A toward unimodality is conditional: it also needs the Case B hub bound (verified
+there only for `n ≤ 22`) and an injection, or Hall-condition, argument between consecutive
+levels, which [Re26] states remains open.
 
-Here we prove the inequality in **closed form, uniformly in `k`**, for the *equal-arm spider*
-`S(2^k)` (the tree obtained by attaching `k` paths of length `2` to a common centre), whose
-independence sequence is `c_t = 2^t \binom{k}{t} + \binom{k}{t-1}` (`= iseq k t` below).
-In fact we prove the stronger *mode-free local tie-balance*: at **any** rising tie
-`c_r ≤ c_{r+1}` we have `μ(λ_r) ≥ r`, equivalently `N_r := ∑_t (t - r) c_t λ_r^t / (\dots) ≥ 0`.
-See `equal_spider_local_tie_balance`.
+Here we prove, in closed form and uniformly in `k`, a *mode-free local tie-balance* for the
+*equal-arm spider* `S(2^k)` (a centre joined to `k` paths of length `2`), whose independence
+sequence is `c_t = 2^t \binom{k}{t} + \binom{k}{t-1}` (`= iseq k t` below): at any rising tie
+`c_r ≤ c_{r+1}` with `r < k`, `μ(λ_r) ≥ r` for `λ_r = c_r / c_{r+1}`, equivalently
+`N_r := ∑_t (t - r) c_t c_r^t c_{r+1}^{k+1-t} ≥ 0`. See `equal_spider_local_tie_balance`.
 
-This is partial progress only; Erdős Problem 993 itself remains open.
+This is partial progress only: it does not prove Conjecture A of [Re26], and Erdős Problem 993
+remains open.
 -/
 
 -- The supporting lemmas below are not Erdős problems, so they carry no `category`/`AMS`
@@ -977,20 +1003,32 @@ end MixedOneLeaf
 end Erdos993
 
 /-
-## Progress toward the hub-of-spiders (`d_leaf ≤ 1`) case: coefficient-domination foundation
+## Toward the hub-of-spiders family (`d_leaf ≤ 1`): coefficient-domination foundation
 
-The remaining open part of Erdős #993 reduces (via Steiner peeling, cf. B. Rey, and Galvin's tail theorem)
-to the *thin* `d_leaf ≤ 1` trees. A key **non-log-concave** family there is the **hub-of-spiders**
-`T_{m,t,1}` — a root with `m` spider children, each spider `S(2^t)` a hub with `t` length-`2` arms — whose
-independence polynomial is `Z = W^m + x(1+2x)^{m t}` with `W = (1+2x)^t + x(1+x)^t`.
+[Re26] proves the mean bound `μ(T) < n/3` for `d_leaf ≤ 1` trees via Steiner peeling, but it does
+not reduce Erdős #993 to `d_leaf ≤ 1` trees: its hub reduction (Corollary "PNP reduction modulo
+Conjectures A and B", L259–L298) only concerns the sizes of certain maximal independent sets,
+assumes Conjecture A for `d_leaf ≤ 1` trees and the Case B hub bound (verified only for
+`n ≤ 22`) for the other trees, and by itself does not prove unimodality. We therefore treat the
+`d_leaf ≤ 1` trees as a natural test class, not as a proven reduction. One family there is the
+**hub-of-spiders** `T_{m,t,1}` — a root with `m` spider children, each spider `S(2^t)` a hub with
+`t` length-`2` arms — whose independence polynomial is `Z = W^m + x(1+2x)^{m t}` with
+`W = (1+2x)^t + x(1+x)^t`.
 
-`T_{m,t,1}` is **unimodal for all `m ≤ 9` and `t ≥ 1`** — established by exact computation
-(`rigorous-informal` / machine-audited, not yet fully formalized). Since the members with `m ≥ 3` are
-*not* log-concave (e.g. Galvin's `T_{3,4,1}` on `28` vertices), this is, to our knowledge, the first
-unimodality result for a substantial non-log-concave tree family. The argument bounds the "mixed rows" of
-`W^m` by geometric multiples of binomials (Maclaurin's inequality) and compares them against an exact
-*A-reserve* coming from the `(1+2x)^{mt}` term. (The `m ≥ 10` case is genuinely open: the negative region
-of the relevant defect is a large terminal interval, and the coarse ULC bound is insufficient there.)
+The family contains non-log-concave members. For example, Galvin's `T_{3,4,1}` on `28` vertices
+has `i_13 = 5410`, `i_14 = 60`, `i_15 = 1`, so log-concavity fails at `k = 14`
+(`60^2 < 5410 · 1`). By contrast `T_{3,1,1}`, with independence sequence
+`[1, 10, 36, 57, 38, 9, 1]`, is log-concave. (In an exact scan over `m, t ≤ 12`, the
+non-log-concave members fail only at `k = m t + 2`; for `m = 3` this happens exactly when
+`t ≥ 4`, and `T_{1,t,1}`, `T_{2,t,1}` are log-concave throughout.)
+
+We have an informal, machine-audited argument, not formalized and not refereed, that `T_{m,t,1}`
+is unimodal for all `m ≤ 9` and `t ≥ 1`; since some of these members are not log-concave,
+unimodality there does not follow from log-concavity. The argument bounds the "mixed rows" of
+`W^m` by geometric multiples of binomials (Maclaurin's inequality) and compares them against an
+exact *A-reserve* coming from the `(1+2x)^{mt}` term. (The `m ≥ 10` case is open: the negative
+region of the relevant defect is a large terminal interval, and the coarse ULC bound is
+insufficient there.)
 
 This section formalizes (sorry-free) the algebraic *ingredients* of that argument:
 * the **coefficient-domination engine** — coefficientwise domination of nonnegative-coefficient polynomials
@@ -1266,3 +1304,41 @@ lemma A_reserve_identity (N k : ℕ) (hk : 1 ≤ k) (hkN : k ≤ N) :
   linear_combination (((k : ℚ) + 1) * 2 * ((N : ℚ) - k + 2)) * h1 - ((k : ℚ) * (k - 1)) * h2
 
 end Erdos993.HubOfSpiders
+
+/-
+## The statements linked from the formal-conjectures statement file
+
+The definitions `spiderSeq`, `mixedSpiderSeq` and the two theorem statements below are the
+same as in `FormalConjectures/ErdosProblems/993.lean` of google-deepmind/formal-conjectures.
+The proofs reduce to `SpiderLTB.equal_spider_local_tie_balance` and
+`MixedOneLeaf.mixed_spider_one_leaf_local_tie_balance` above.
+-/
+
+namespace Erdos993
+
+/-- The independence sequence of the equal-arm spider $S(2^k)$, a centre joined to $k$ paths of
+length $2$: $c_t = 2^t\binom{k}{t} + \binom{k}{t-1}$, where $\binom{k}{-1} = 0$. -/
+def spiderSeq (k t : ℕ) : ℕ := (if t = 0 then 0 else k.choose (t - 1)) + 2 ^ t * k.choose t
+
+/-- The independence sequence of the one-leaf mixed spider $S(2^a, 1)$, a centre joined to $a$
+paths of length $2$ and to one pendant vertex:
+$c_t = 2^t\binom{a}{t} + (2^{t-1} + 1)\binom{a}{t-1}$, where $\binom{a}{-1} = 0$. -/
+def mixedSpiderSeq (a t : ℕ) : ℕ :=
+  2 ^ t * a.choose t + (if t = 0 then 0 else (2 ^ (t - 1) + 1) * a.choose (t - 1))
+
+/-- Local tie-balance for the equal-arm spider $S(2^k)$ at every rising tie. -/
+theorem erdos_993.variants.equal_spider_local_tie_balance (k r : ℕ) (hr : r < k)
+    (hrise : spiderSeq k r ≤ spiderSeq k (r + 1)) :
+    0 ≤ ∑ t ∈ Finset.range (k + 2),
+      ((t : ℚ) - r) * spiderSeq k t * (spiderSeq k r : ℚ) ^ t *
+        (spiderSeq k (r + 1) : ℚ) ^ (k + 1 - t) :=
+  SpiderLTB.equal_spider_local_tie_balance k r hr hrise
+
+/-- Local tie-balance for the one-leaf mixed spider $S(2^a, 1)$, with no rising-tie hypothesis. -/
+theorem erdos_993.variants.mixed_spider_one_leaf_local_tie_balance (a r : ℕ) (hr : r < a) :
+    0 ≤ ∑ t ∈ Finset.range (a + 2),
+      ((t : ℚ) - r) * mixedSpiderSeq a t * (mixedSpiderSeq a r : ℚ) ^ t *
+        (mixedSpiderSeq a (r + 1) : ℚ) ^ (a + 1 - t) :=
+  MixedOneLeaf.mixed_spider_one_leaf_local_tie_balance a r hr
+
+end Erdos993
